@@ -1,0 +1,42 @@
+
+.normal {
+  padding-bottom: 100px;
+}
+#section-select{
+  padding: 60px 15px 60px 30px;
+  border-bottom: 1px solid #ddd;
+}
+.select-list{
+}
+.select-list :global(.item){
+  box-sizing: border-box;
+  height: 86px;
+  line-height: 86px;
+  text-align: center;
+  margin-right: 15px;
+  flex: 1 1 33.333%;
+  font-size: 34px;
+  color: @brand-primary;
+  border: 1px solid @brand-primary;
+  border-radius: 6px;
+}
+.select-list :global(.item.active){
+  color: #fff;
+  background-color: @brand-primary;
+}
+.normal :global(.am-list-item .am-input-control input){
+  text-align: right;
+  padding-right: 42px;
+  font-size: 30px;
+  color: #333;
+}
+
+.normal :global(.am-list-item .am-input-control){
+  font-size: 30px;
+}
+
+.normal :global(.am-list-item .am-input-label.am-input-label-5){
+  font-size: 30px;
+  color: #333;
+  width: auto;
+}

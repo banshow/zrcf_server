@@ -1,0 +1,29 @@
+
+.normal {
+}
+#record-list :global(.item){
+  height: 180px;
+  background-color: #fff;
+}
+#record-list :global(.item)~:global(.item){
+  margin-top: 20px;
+}
+#my-table{
+  text-align: center;
+}
+#my-table :global(.zrcf-table-row){
+  box-sizing: border-box;
+  height: 100px;
+}
+#my-table :global(.zrcf-table-row .zrcf-table-cell){
+  vertical-align: middle;
+}
+#my-table :global(.zrcf-table-row):after{
+  position: absolute;
+  height: 1px;
+  left:30px;
+  right: 0;
+  width: auto;
+  content: '';
+  background-color: #eee;
+}
