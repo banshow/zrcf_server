@@ -41,6 +41,7 @@ app.model(require("./models/findpassword"));
 app.model(require("./models/register"));
 
 app.model(require("./models/login"));
+app.model(require("./models/receipt"));
 
 // 2. Plugins
 // app.use({});

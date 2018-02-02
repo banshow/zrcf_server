@@ -82,10 +82,44 @@ function OrderDetail(props) {
           <div><span className="color-orange">{orderDetail.need_amount}</span>元</div>
         </div>
       </div>
-
-      <div className="zrcf-btn-group fixed-lb width-full">
-        <Button className="zrcf-btn" type="primary" onClick={()=>{}}>我要接单</Button>
-      </div>
+      {
+        orderDetail.order_status == '1'?<div className="zrcf-btn-group fixed-lb width-full">
+          <Button className="zrcf-btn" type="primary" onClick={()=>{
+            alert('', <div className="flex-col flex-jc-center color-3 fs-30" style={{height:'1.4rem'}}>
+              <div>确认接单吗?</div>
+              <div>接单后，请按时上门提供服务。</div>
+            </div>, [
+              { text: '取消', onPress: () => {} },
+              { text: '确定', onPress: () => {
+                props.dispatch({
+                  type: 'order/accept',
+                  id: orderDetail.id,
+                  success: () => {
+                    props.dispatch({ type: 'order/toggleOrderTabKey', key: '1' });
+                    props.history.replace('/indexpage/orderTab');
+                  }});
+                }},
+            ])
+          }}>我要接单</Button>
+        </div>:(orderDetail.order_status == '2'?<div className="zrcf-btn-group fixed-lb width-full">
+          <Button className="zrcf-btn" type="primary" onClick={()=>{
+            alert('', <div className="flex-col flex-jc-center color-3 fs-30" style={{height:'1.4rem'}}>
+              <div>确认出发吗?</div>
+            </div>, [
+              { text: '取消', onPress: () => {} },
+              { text: '确定', onPress: () => {
+                  props.dispatch({
+                    type: 'order/start',
+                    id: orderDetail.id,
+                    success: () => {
+                      props.dispatch({ type: 'order/toggleOrderTabKey', key: '2' });
+                      props.history.replace('/indexpage/orderTab');
+                    }});
+                }},
+            ])
+          }}>出发</Button>
+        </div>:'')
+      }
 
       <Modal
         style={{width:'92%'}}

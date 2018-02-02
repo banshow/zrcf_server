@@ -19,13 +19,15 @@ export default {
   },
   effects: {
     *fetch({},{call,put}) {
-      const [usercategory,userdata] = yield [
+      const [usercategory,userdata,incomedata] = yield [
         call(httpservice.post, {url:'customerAbilityOperation',param:{ac:'get'}}),
-        call(httpservice.post, {url:'getCustomerInfo',param:{type:'user'}})
-      ]
+        call(httpservice.post, {url:'getCustomerInfo',param:{type:'user'}}),
+        call(httpservice.post, {url:'customerBillOperation',param:{ac:'getCountCashAmount'}})
+      ];
       let ucgs = usercategory.data.data || [];
       let userInfo = userdata.data.data || {};
       userInfo.isSetType = ucgs.length>0;
+      userInfo.countCash = (incomedata.data.data || {}).countCash || 0;
       yield put({ type: 'init',userInfo:userInfo});
     },
   },

@@ -107,10 +107,16 @@ class MobileDemo extends React.Component {
                         <div>确认接单吗?</div>
                         <div>接单后，请按时上门提供服务。</div>
                       </div>, [
-                        { text: '取消', onPress: () => console.log('cancel') },
+                        { text: '取消', onPress: () => {} },
                         { text: '确定', onPress: () => {
-
-                        } },
+                          this.props.dispatch({
+                            type: 'order/accept',
+                            id: v.id,
+                            success: () => {
+                              this.props.dispatch({ type: 'order/toggleOrderTabKey', key: '1' });
+                              this.props.history.replace('/indexpage/orderTab');
+                            }});
+                        }},
                       ])
                     }}>接单</div>
                   </div>
@@ -120,187 +126,124 @@ class MobileDemo extends React.Component {
             </Card>
           </div>
         ))}
-        {/*<div className={styles['todo-item']}>
-          <Card full style={{border: 'none', paddingBottom: '0'}} onClick={()=>{this.props.history.push('/orderdetail')}}>
-            <Card.Header
-              style={{height: '1rem', boxSizing: 'border-box', fontSize: '0.3rem', color: '#333'}}
-              title="收银电脑安装"
-            />
-            <Card.Body style={{boxSizing: 'border-box', padding: '0 0.3rem'}}>
-              <div className="flex-col flex-jc-center"
-                   style={{height: '2.46rem', fontSize: '0.3rem', color: '#333'}}>
-                <div className="">预约上门时间：2017-08-27 16:40:00</div>
-                <div className="mt-25 flex-row ai-center flex-jc-sb">
-                  <div style={{width: '5rem'}} className="single-line">服务地址：北京市建国路118号万达广场</div>
-                  <div className="btn-min" onClick={(e)=>{
-                    e.stopPropagation();
-                    alert('', <div className="flex-col flex-jc-center color-3 fs-30" style={{height:'1.4rem'}}>
-                      <div>确认接单吗?</div>
-                      <div>接单后，请按时上门提供服务。</div>
-                    </div>, [
-                      { text: '取消', onPress: () => console.log('cancel') },
-                      { text: '确定', onPress: () => {
-
-                      } },
-                    ])
-                  }}>接单</div>
-                </div>
-                <div className="mt-25">服务价格：<span className="color-orange">¥350</span></div>
-              </div>
-            </Card.Body>
-          </Card>
-        </div>
-        <div className={styles['todo-item']}>
-          <Card full style={{border: 'none', paddingBottom: '0'}} onClick={()=>{this.props.history.push('/orderdetail')}}>
-            <Card.Header
-              style={{height: '1rem', boxSizing: 'border-box', fontSize: '0.3rem', color: '#333'}}
-              title="收银电脑安装"
-            />
-            <Card.Body style={{boxSizing: 'border-box', padding: '0 0.3rem'}}>
-              <div className="flex-col flex-jc-center"
-                   style={{height: '2.46rem', fontSize: '0.3rem', color: '#333'}}>
-                <div className="">预约上门时间：2017-08-27 16:40:00</div>
-                <div className="mt-25 flex-row ai-center flex-jc-sb">
-                  <div style={{width: '5rem'}} className="single-line">服务地址：北京市建国路118号万达广场</div>
-                  <div className="btn-min" onClick={(e)=>{
-                    e.stopPropagation();
-                    alert('', <div className="flex-col flex-jc-center color-3 fs-30" style={{height:'1.4rem'}}>
-                      <div>确认接单吗?</div>
-                      <div>接单后，请按时上门提供服务。</div>
-                    </div>, [
-                      { text: '取消', onPress: () => console.log('cancel') },
-                      { text: '确定', onPress: () => {
-
-                      } },
-                    ])
-                  }}>接单</div>
-                </div>
-                <div className="mt-25">服务价格：<span className="color-orange">¥350</span></div>
-              </div>
-            </Card.Body>
-          </Card>
-        </div>
-        <div className={styles['todo-item']}>
-          <Card full style={{border: 'none', paddingBottom: '0'}} onClick={()=>{this.props.history.push('/orderdetail')}}>
-            <Card.Header
-              style={{height: '1rem', boxSizing: 'border-box', fontSize: '0.3rem', color: '#333'}}
-              title="收银电脑安装"
-            />
-            <Card.Body style={{boxSizing: 'border-box', padding: '0 0.3rem'}}>
-              <div className="flex-col flex-jc-center"
-                   style={{height: '2.46rem', fontSize: '0.3rem', color: '#333'}}>
-                <div className="">预约上门时间：2017-08-27 16:40:00</div>
-                <div className="mt-25 flex-row ai-center flex-jc-sb">
-                  <div style={{width: '5rem'}} className="single-line">服务地址：北京市建国路118号万达广场</div>
-                  <div className="btn-min" onClick={(e)=>{
-                    e.stopPropagation();
-                    alert('', <div className="flex-col flex-jc-center color-3 fs-30" style={{height:'1.4rem'}}>
-                      <div>确认接单吗?</div>
-                      <div>接单后，请按时上门提供服务。</div>
-                    </div>, [
-                      { text: '取消', onPress: () => console.log('cancel') },
-                      { text: '确定', onPress: () => {
-
-                      } },
-                    ])
-                  }}>接单</div>
-                </div>
-                <div className="mt-25">服务价格：<span className="color-orange">¥350</span></div>
-              </div>
-            </Card.Body>
-          </Card>
-        </div>*/}
       </div>
     );
   }
 
   renderOrder(pageText) {
+    const {myorder} = this.state.order;
     return (
       <div className="flex-col" style={{height: '100%', paddingBottom: '1.1rem'}}>
-        <Tabs defaultActiveKey="1">
+        <Tabs activeKey={this.state.order.orderTabKey} onChange={(key)=>{
+          this.props.dispatch({type: 'order/toggleOrderTabKey',key:key});
+        }}>
           <TabPane tab="已接单" key="1">
-            <div className="mt-20">
-              <Card full style={{border: 'none', paddingBottom: '0'}} onClick={()=>{this.props.history.push('/orderdetail')}}>
+            {myorder ? (myorder['yjd']||[]).map((v,i)=>(
+            <div className="mt-20" key={v.id}>
+              <Card full style={{border: 'none', paddingBottom: '0'}} onClick={()=>{this.props.history.push('/orderdetail?id='+v.id)}}>
                 <Card.Header
                   style={{height: '1rem', boxSizing: 'border-box', fontSize: '0.3rem', color: '#333'}}
-                  title="收银电脑安装"
+                  title={v.cat_id2}
                   extra={<span className="fs-30 color-orange">已接单</span>}
                 />
                 <Card.Body style={{boxSizing: 'border-box', padding: '0 0.3rem'}}>
                   <div className="flex-col flex-jc-center"
                        style={{height: '2.46rem', fontSize: '0.3rem', color: '#333'}}>
-                    <div className="">预约上门时间：2017-08-27 16:40:00</div>
+                    <div className="">预约上门时间：{v.cdate}</div>
                     <div className="mt-25 flex-row ai-center flex-jc-sb">
-                      <div style={{width: '6.9rem'}} className="single-line">服务地址：北京市建国路118号万达广场23号楼</div>
+                      <div style={{width: '5rem'}} className="single-line">服务地址：{v.address}</div>
+                      <div className="btn-min"
+                           onClick={(e) => {
+                             e.stopPropagation();
+                             alert('', <div className="flex-col flex-jc-center color-3 fs-30" style={{height:'1.4rem'}}>
+                               <div>确认出发吗?</div>
+                             </div>, [
+                               { text: '取消', onPress: () => {} },
+                               { text: '确定', onPress: () => {
+                                   this.props.dispatch({
+                                     type: 'order/start',
+                                     id: v.id,
+                                    });
+                                 }},
+                             ])
+                           }}
+                      >出发</div>
                     </div>
-                    <div className="mt-25">服务价格：<span className="color-orange">¥350</span></div>
+                    <div className="mt-25">服务价格：<span className="color-orange">¥{v.total_amount}</span></div>
                   </div>
                 </Card.Body>
               </Card>
-            </div>
+            </div>)):''
+            }
           </TabPane>
           <TabPane tab="已出发" key="2">
-            <div className="mt-20">
-              <Card full style={{border: 'none', paddingBottom: '0'}} onClick={()=>{this.props.history.push('/orderdetail')}}>
-                <Card.Header
-                  style={{height: '1rem', boxSizing: 'border-box', fontSize: '0.3rem', color: '#333'}}
-                  title="收银电脑安装"
-                  extra={<span className="fs-30 color-orange">已出发</span>}
-                />
-                <Card.Body style={{boxSizing: 'border-box', padding: '0 0.3rem'}}>
-                  <div className="flex-col flex-jc-center"
-                       style={{height: '2.46rem', fontSize: '0.3rem', color: '#333'}}>
-                    <div className="">预约上门时间：2017-08-27 16:40:00</div>
-                    <div className="mt-25 flex-row ai-center flex-jc-sb">
-                      <div style={{width: '6.9rem'}} className="single-line">服务地址：北京市建国路118号万达广场23号楼</div>
+            {myorder ? (myorder['ycf']||[]).map((v,i)=>(
+              <div className="mt-20" key={v.id}>
+                <Card full style={{border: 'none', paddingBottom: '0'}} onClick={()=>{this.props.history.push('/orderdetail?id='+v.id)}}>
+                  <Card.Header
+                    style={{height: '1rem', boxSizing: 'border-box', fontSize: '0.3rem', color: '#333'}}
+                    title={v.cat_id2}
+                    extra={<span className="fs-30 color-orange">已出发</span>}
+                  />
+                  <Card.Body style={{boxSizing: 'border-box', padding: '0 0.3rem'}}>
+                    <div className="flex-col flex-jc-center"
+                         style={{height: '2.46rem', fontSize: '0.3rem', color: '#333'}}>
+                      <div className="">预约上门时间：{v.cdate}</div>
+                      <div className="mt-25 flex-row ai-center flex-jc-sb">
+                        <div style={{width: '6.9rem'}} className="single-line">服务地址：{v.address}</div>
+                      </div>
+                      <div className="mt-25">服务价格：<span className="color-orange">¥{v.total_amount}</span></div>
                     </div>
-                    <div className="mt-25">服务价格：<span className="color-orange">¥350</span></div>
-                  </div>
-                </Card.Body>
-              </Card>
-            </div>
+                  </Card.Body>
+                </Card>
+              </div>)):''
+            }
           </TabPane>
           <TabPane tab="服务中" key="3">
-            <div className="mt-20">
-              <Card full style={{border: 'none', paddingBottom: '0'}}>
-                <Card.Header
-                  style={{height: '1rem', boxSizing: 'border-box', fontSize: '0.3rem', color: '#333'}}
-                  title="收银电脑安装"
-                  extra={<span className="fs-30 color-orange">服务中</span>}
-                />
-                <Card.Body style={{boxSizing: 'border-box', padding: '0 0.3rem'}}>
-                  <div className="flex-col flex-jc-center"
-                       style={{height: '2.46rem', fontSize: '0.3rem', color: '#333'}}>
-                    <div className="">预约上门时间：2017-08-27 16:40:00</div>
-                    <div className="mt-25 flex-row ai-center flex-jc-sb">
-                      <div style={{width: '6.9rem'}} className="single-line">服务地址：北京市建国路118号万达广场</div>
+            {myorder ? (myorder['ydd']||[]).map((v,i)=>(
+              <div className="mt-20" key={v.id}>
+                <Card full style={{border: 'none', paddingBottom: '0'}} onClick={()=>{this.props.history.push('/orderdetail?id='+v.id)}}>
+                  <Card.Header
+                    style={{height: '1rem', boxSizing: 'border-box', fontSize: '0.3rem', color: '#333'}}
+                    title={v.cat_id2}
+                    extra={<span className="fs-30 color-orange">服务中</span>}
+                  />
+                  <Card.Body style={{boxSizing: 'border-box', padding: '0 0.3rem'}}>
+                    <div className="flex-col flex-jc-center"
+                         style={{height: '2.46rem', fontSize: '0.3rem', color: '#333'}}>
+                      <div className="">预约上门时间：{v.cdate}</div>
+                      <div className="mt-25 flex-row ai-center flex-jc-sb">
+                        <div style={{width: '6.9rem'}} className="single-line">服务地址：{v.address}</div>
+                      </div>
+                      <div className="mt-25">服务价格：<span className="color-orange">¥{v.total_amount}</span></div>
                     </div>
-                    <div className="mt-25">服务价格：<span className="color-orange">¥350</span></div>
-                  </div>
-                </Card.Body>
-              </Card>
-            </div>
+                  </Card.Body>
+                </Card>
+              </div>)):''
+            }
           </TabPane>
           <TabPane tab="已完成" key="4">
-            <div className="mt-20">
-              <Card full style={{border: 'none', paddingBottom: '0'}}>
-                <Card.Header
-                  style={{height: '1rem', boxSizing: 'border-box', fontSize: '0.3rem', color: '#333'}}
-                  title="收银电脑安装"
-                  extra={<span className="fs-30 color-orange">已完成</span>}
-                />
-                <Card.Body style={{boxSizing: 'border-box', padding: '0 0.3rem'}}>
-                  <div className="flex-col flex-jc-center"
-                       style={{height: '2.46rem', fontSize: '0.3rem', color: '#333'}}>
-                    <div className="">预约上门时间：2017-08-27 16:40:00</div>
-                    <div className="mt-25 flex-row ai-center flex-jc-sb">
-                      <div style={{width: '6.9rem'}} className="single-line">服务地址：北京市建国路118号万达广场</div>
+            {myorder ? (myorder['fwwc']||[]).map((v,i)=>(
+              <div className="mt-20" key={v.id}>
+                <Card full style={{border: 'none', paddingBottom: '0'}} onClick={()=>{this.props.history.push('/orderdetail?id='+v.id)}}>
+                  <Card.Header
+                    style={{height: '1rem', boxSizing: 'border-box', fontSize: '0.3rem', color: '#333'}}
+                    title={v.cat_id2}
+                    extra={<span className="fs-30 color-orange">已完成</span>}
+                  />
+                  <Card.Body style={{boxSizing: 'border-box', padding: '0 0.3rem'}}>
+                    <div className="flex-col flex-jc-center"
+                         style={{height: '2.46rem', fontSize: '0.3rem', color: '#333'}}>
+                      <div className="">预约上门时间：{v.cdate}</div>
+                      <div className="mt-25 flex-row ai-center flex-jc-sb">
+                        <div style={{width: '6.9rem'}} className="single-line">服务地址：{v.address}</div>
+                      </div>
+                      <div className="mt-25">服务价格：<span className="color-orange">¥{v.total_amount}</span></div>
                     </div>
-                    <div className="mt-25">服务价格：<span className="color-orange">¥350</span></div>
-                  </div>
-                </Card.Body>
-              </Card>
-            </div>
+                  </Card.Body>
+                </Card>
+              </div>)):''
+            }
           </TabPane>
         </Tabs>
       </div>
@@ -327,14 +270,14 @@ class MobileDemo extends React.Component {
           <List>
             <Item onClick={()=>{
               this.props.history.push('/income')
-            }} thumb={require('../assets/shouruguanli.png')} arrow="horizontal" extra={<span className="fs-28 color-be">可提现收入：<span className="color-orange">¥50.00</span></span>}><span className="fs-32 color-3">收入管理</span></Item>
+            }} thumb={require('../assets/shouruguanli.png')} arrow="horizontal" extra={<span className="fs-28 color-be">可提现收入：<span className="color-orange">¥{this.props.user.userInfo.countCash}</span></span>}><span className="fs-32 color-3">收入管理</span></Item>
             <Item thumb={require('../assets/lianxikefu.png')} arrow="horizontal"><span className="fs-32 color-3">联系客服</span></Item>
             <Item onClick={()=>{
               this.props.history.push('/servicetype')
             }} thumb={require('../assets/fuwuxiangmu.png')} arrow="horizontal" extra={this.props.user.userInfo.isSetType?'':<span className="fs-28 color-be">尚未设置</span>}><span className="fs-32 color-3">服务项目</span></Item>
             <Item onClick={()=>{
               this.props.history.push('/certification')
-            }} thumb={require('../assets/shenfenrenzheng.png')} arrow="horizontal"  extra={<span className="fs-28 color-orange">已认证</span>}><span className="fs-32 color-3">身份认证</span></Item>
+            }} thumb={require('../assets/shenfenrenzheng.png')} arrow="horizontal"  extra={this.props.user.userInfo.id_is_ok==='1'?<span className="fs-28 color-orange">已认证</span>:''}><span className="fs-32 color-3">身份认证</span></Item>
 
             <Item onClick={()=>{
               alert('', '确定退出吗?', [

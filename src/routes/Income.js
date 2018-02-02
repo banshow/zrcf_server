@@ -3,7 +3,8 @@ import {connect} from 'dva';
 import {NavBar, Button, List} from 'antd-mobile';
 import styles from './Income.less';
 const Item = List.Item;
-function Income({dispatch, history}) {
+function Income({dispatch, history,user}) {
+  const {userInfo} = user;
   return (
     <div className={styles.normal}>
       <NavBar
@@ -17,7 +18,7 @@ function Income({dispatch, history}) {
         <div className="mt-40 fs-34 color-35">账户余额</div>
         <div className="color-35 fs-54"  style={{height:'.8rem',lineHeight:'.8rem',marginTop:'.34rem'}}>
           <span className="va-top">¥</span>
-          <span className="fs-80 va-top">99.00</span>
+          <span className="fs-80 va-top">{userInfo.amount||'0.00'}</span>
         </div>
       </div>
       <List className="mt-20 my-list">
@@ -46,8 +47,8 @@ function Income({dispatch, history}) {
   );
 }
 
-function mapStateToProps() {
-  return {};
+function mapStateToProps(state) {
+  return {...state};
 }
 
 export default connect(mapStateToProps)(Income);

@@ -3,7 +3,7 @@ import {apiBaseUrl} from '../config';
 function object2fromData(param) {
   let formData = '';
   Object.getOwnPropertyNames(param).forEach((k)=>{
-    formData+='&'+k+'='+param[k];
+    formData+='&'+k+'='+encodeURIComponent(param[k]);
   })
   return formData.substring(1);
 }
@@ -38,7 +38,7 @@ export function upload({url,files}) {
     formData.append('uploadImg[]',f.file);
   })
   return request(`${apiBaseUrl+url}`,{
-   // headers:{'Content-Type':'multipart/form-data'},
+    // headers:{'Content-Type':'multipart/form-data'},
     method: 'POST',
     body: formData
   });
@@ -63,3 +63,5 @@ export function create(values) {
     body: JSON.stringify(values),
   });
 }
+
+
