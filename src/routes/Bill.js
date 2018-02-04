@@ -4,9 +4,10 @@ import {NavBar, Button, List,Modal,InputItem} from 'antd-mobile';
 import { createForm } from 'rc-form';
 import styles from './Bill.less';
 
-function Bill({dispatch, history,form}) {
+function Bill({dispatch, history,form,income}) {
   const {getFieldProps,getFieldsValue,setFieldsValue} = form;
   const data = {...getFieldsValue(null)};
+  const {billList} = income;
   return (
     <div className={styles.normal}>
       <NavBar
@@ -28,26 +29,11 @@ function Bill({dispatch, history,form}) {
           <div className="zrcf-table-cell">申请提现金额</div>
           <div className="zrcf-table-cell">账单日</div>
         </div>
-        <div className="zrcf-table-row">
-          <div className="zrcf-table-cell">¥16800.00</div>
-          <div className="zrcf-table-cell">2016-08-09</div>
+        {billList.map(v=>(<div className="zrcf-table-row" key={v.id}>
+          <div className="zrcf-table-cell">¥{v.div_amount}</div>
+          <div className="zrcf-table-cell">{v.cdate}</div>
         </div>
-        <div className="zrcf-table-row">
-          <div className="zrcf-table-cell">¥12600.00</div>
-          <div className="zrcf-table-cell">2016-08-09</div>
-        </div>
-        <div className="zrcf-table-row">
-          <div className="zrcf-table-cell">¥4000.00</div>
-          <div className="zrcf-table-cell">2016-08-09</div>
-        </div>
-        <div className="zrcf-table-row">
-          <div className="zrcf-table-cell">¥1200.00</div>
-          <div className="zrcf-table-cell">2016-08-09</div>
-        </div>
-        <div className="zrcf-table-row">
-          <div className="zrcf-table-cell">¥1200.00</div>
-          <div className="zrcf-table-cell">2016-08-09</div>
-        </div>
+        ))}
       </div>
 
       <Modal
@@ -73,8 +59,8 @@ function Bill({dispatch, history,form}) {
   );
 }
 
-function mapStateToProps() {
-  return {};
+function mapStateToProps(state) {
+  return {...state};
 }
 const BillWrapper = createForm()(Bill);
 export default connect(mapStateToProps)(BillWrapper);

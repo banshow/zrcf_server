@@ -4,9 +4,10 @@ import {NavBar, Button, List,Modal,InputItem} from 'antd-mobile';
 import { createForm } from 'rc-form';
 import styles from './IncomeRecord.less';
 
-function IncomeRecord({dispatch, history,form}) {
-  const {getFieldProps,getFieldsValue,setFieldsValue} = form;
+function IncomeRecord({dispatch, history,form,income}) {
+  const {getFieldProps,getFieldsValue,setFieldsValue,getFieldValue} = form;
   const data = {...getFieldsValue(null)};
+  const {list} = income;
   return (
     <div className={styles.normal}>
       <NavBar
@@ -20,6 +21,12 @@ function IncomeRecord({dispatch, history,form}) {
           type="hidden"
           {...getFieldProps('showModal',{
             initialValue: data.showModal
+          })}
+        />
+        <InputItem
+          type="hidden"
+          {...getFieldProps('node',{
+            initialValue: ''
           })}
         />
       </List>
@@ -36,36 +43,31 @@ function IncomeRecord({dispatch, history,form}) {
           <div className="zrcf-table-cell">申请时间</div>
           <div className="zrcf-table-cell">处理状态</div>
         </div>
-        <div className="zrcf-table-row">
-          <div className="zrcf-table-cell">¥16800.00</div>
-          <div className="zrcf-table-cell">2016-08-09</div>
-          <div className="zrcf-table-cell color-bp">审核中</div>
-        </div>
-        <div className="zrcf-table-row">
-          <div className="zrcf-table-cell">¥12600.00</div>
-          <div className="zrcf-table-cell">2016-08-09</div>
-          <div className="zrcf-table-cell color-orange">审核通过</div>
-        </div>
-        <div className="zrcf-table-row">
-          <div className="zrcf-table-cell">¥4000.00</div>
-          <div className="zrcf-table-cell">2016-08-09</div>
-          <div className="zrcf-table-cell color-orange">审核通过</div>
-        </div>
-        <div className="zrcf-table-row">
-          <div className="zrcf-table-cell">¥1200.00</div>
-          <div className="zrcf-table-cell">2016-08-09</div>
-          <div className="zrcf-table-cell color-orange">审核通过</div>
-        </div>
-        <div className="zrcf-table-row">
-          <div className="zrcf-table-cell">¥1200.00</div>
-          <div className="zrcf-table-cell">2016-08-09</div>
-          <div className="zrcf-table-cell color-r">
-            审核不通过
-            <img className="ml-20 wh-30 va-middle" src={require('../assets/why_b.png')} onClick={()=>{
-              //setFieldsValue({"showModal":data.showModal=='1'?'0':'1'})
-            }}/>
-          </div>
-        </div>
+        {list.map(v=>{
+         return v.status == '1'?(<div className="zrcf-table-row" key={v.id}>
+            <div className="zrcf-table-cell">¥{v.cash_amount}</div>
+            <div className="zrcf-table-cell">{v.cdate}</div>
+            <div className="zrcf-table-cell color-bp">审核中</div>
+          </div>):(v.status == '2'?(
+            <div className="zrcf-table-row" key={v.id}>
+              <div className="zrcf-table-cell">¥{v.cash_amount}</div>
+              <div className="zrcf-table-cell">{v.cdate}</div>
+              <div className="zrcf-table-cell color-orange">审核通过</div>
+            </div>
+          ):(
+            <div className="zrcf-table-row" key={v.id}>
+              <div className="zrcf-table-cell">¥{v.cash_amount}</div>
+              <div className="zrcf-table-cell">{v.cdate}</div>
+              <div className="zrcf-table-cell color-r">
+                审核不通过
+                <img className="ml-20 wh-30 va-middle" src={require('../assets/why_b.png')} onClick={()=>{
+                  setFieldsValue({"showModal":data.showModal=='1'?'0':'1','node':v.node})
+                }}/>
+              </div>
+            </div>
+          ))
+
+        })}
       </div>
 
       <Modal
@@ -82,8 +84,8 @@ function IncomeRecord({dispatch, history,form}) {
         platform="ios"
       >
         <div className="flex-col ai-center ph-30">
-          <div className="lh-1 fs-32 color-3" style={{marginTop:'.05rem'}}>发票核实信息</div>
-          <div className="fs-30 color-3" style={{lineHeight:'.5rem',marginTop:'1.09rem',marginBottom:'.76rem'}}>您的发票抬头信息填写不完整,请重新填写后提交</div>
+          <div className="lh-1 fs-32 color-3" style={{marginTop:'.05rem'}}>审核未通过原因</div>
+          <div className="fs-30 color-3" style={{lineHeight:'.5rem',marginTop:'1.09rem',marginBottom:'.76rem'}}>{getFieldValue('node')}</div>
         </div>
       </Modal>
 
@@ -91,8 +93,8 @@ function IncomeRecord({dispatch, history,form}) {
   );
 }
 
-function mapStateToProps() {
-  return {};
+function mapStateToProps(state) {
+  return {...state};
 }
 const IncomeRecordWrapper = createForm()(IncomeRecord);
 export default connect(mapStateToProps)(IncomeRecordWrapper);

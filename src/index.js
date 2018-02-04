@@ -42,6 +42,7 @@ app.model(require("./models/register"));
 
 app.model(require("./models/login"));
 app.model(require("./models/receipt"));
+app.model(require("./models/income"));
 
 // 2. Plugins
 // app.use({});

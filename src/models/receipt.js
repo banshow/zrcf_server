@@ -26,7 +26,7 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {
       history.listen(({ pathname, query }) => {
-        if (pathname==='/receipt') {
+        if (pathname==='/receipt' || pathname==='/applyincome') {
           dispatch({ type: 'fetch'});
         }
       });

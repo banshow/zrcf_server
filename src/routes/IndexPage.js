@@ -270,7 +270,7 @@ class MobileDemo extends React.Component {
           <List>
             <Item onClick={()=>{
               this.props.history.push('/income')
-            }} thumb={require('../assets/shouruguanli.png')} arrow="horizontal" extra={<span className="fs-28 color-be">可提现收入：<span className="color-orange">¥{this.props.user.userInfo.countCash}</span></span>}><span className="fs-32 color-3">收入管理</span></Item>
+            }} thumb={require('../assets/shouruguanli.png')} arrow="horizontal" extra={<span className="fs-28 color-be">可提现收入：<span className="color-orange">¥{this.props.user.userInfo.engineerWallet.countCash}</span></span>}><span className="fs-32 color-3">收入管理</span></Item>
             <Item thumb={require('../assets/lianxikefu.png')} arrow="horizontal"><span className="fs-32 color-3">联系客服</span></Item>
             <Item onClick={()=>{
               this.props.history.push('/servicetype')

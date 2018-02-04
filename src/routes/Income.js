@@ -18,7 +18,7 @@ function Income({dispatch, history,user}) {
         <div className="mt-40 fs-34 color-35">账户余额</div>
         <div className="color-35 fs-54"  style={{height:'.8rem',lineHeight:'.8rem',marginTop:'.34rem'}}>
           <span className="va-top">¥</span>
-          <span className="fs-80 va-top">{userInfo.amount||'0.00'}</span>
+          <span className="fs-80 va-top">{userInfo.engineerWallet.Wallet||'0.00'}</span>
         </div>
       </div>
       <List className="mt-20 my-list">
